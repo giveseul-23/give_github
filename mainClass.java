@@ -1,77 +1,39 @@
-package mainClass;
-
-import java.util.Scanner;
+package main;
 
 public class mainClass {
-
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+		//First In First Out
 		
-		/*
-			Stack : First In Last Out
-		*/
-		/*
-		StackClass stack = new StackClass(5);
+		QueueClass queue = new QueueClass(5);
 		
 		String str = "one";
-		stack.push(str);
+		queue.push(str);
 		
-		String peekstr = (String)stack.peek();
-		System.out.println("top object : "+ peekstr);
+		String front = (String)queue.peek();
+		System.out.println("front = " + front);
 		
 		str = "two";
-		stack.push(str);
+		queue.push(str);
 		
-		peekstr = (String)stack.peek();
-		System.out.println("top object : "+ peekstr);
+		front = (String)queue.peek();
+		System.out.println("front = " + front);
 		
-		String popStr = (String)stack.pop();
-		System.out.println("삭제된 object : "+ popStr);
+		str = "three";
+		queue.push(str);
 		
-		peekstr = (String)stack.peek();
-		System.out.println("top object : "+ peekstr);
+		front = (String)queue.peek();
+		System.out.println("front = " + front);
+		//계속 one인 이유는 수평정렬로 되어있어서 삭제하지 않는다면 front는 변경이 x
 		
-		Integer i = 111;
-		stack.push(i);
+		queue.pop(); //첫번째 부분 삭제
 		
-		Integer t = (Integer)stack.peek();
-		System.out.println("top object : "+ t);
-		*/
-		StackClass stack = new StackClass(5);
+		front = (String)queue.peek();
+		System.out.println("front = " + front); //front = two
 		
-		while(true) {
-			
-			System.out.println("1. 입력");
-			System.out.println("2. 삭제");
-			System.out.println("3. 정보출력");
-			System.out.println("4. 종료");
-			System.out.print("선택하실 작업을 입력 : ");
-			int num = sc.nextInt();
-			
-			switch(num) {
-				case 1 : 
-					System.out.print("입력할 내용 : ");
-					String name = sc.next();
-					stack.push(name);
-					break;
-				case 2 : 
-					System.out.print("삭제");
-					name = (String)stack.pop();
-					break;
-				case 3 : 
-					System.out.println("현재 최상단 내용");
-					String name1 = (String) stack.peek();
-					System.out.println(name1);
-					break;
-			}
-			
-			if(num == 4) {
-				break;
-			}
-		}
+		queue.pop();//첫번째 부분 삭제
 		
-		
+		front = (String)queue.peek();
+		System.out.println("front = " + front);//front = three
 		
 	}
-
 }
