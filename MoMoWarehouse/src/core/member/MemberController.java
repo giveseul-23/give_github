@@ -13,7 +13,20 @@ public interface MemberController {
 	void login(Member member); 
 	
 	//1.회원정보 수정 2.입출고 3.입출고내역 4.충전 5.로그아웃
-	void userMenu(String select, Member member); //회원정보 출력하고 메뉴 보여주기
+	boolean userMenu(String select, Member member); //회원정보 출력하고 메뉴 보여주기
+	
+	//userMenu - 1.회원정보수정 - 메뉴 부분
+	boolean userUpdating(Member member, String id);
+	//- 정보수정 선택 후 입력값 입력 
+	int userUpdatingInput(String userMenuSelect, String id);
+	
+	//모모인포에서 가지고 옴
+	//userMenu - 3. 입출고내역
+	//userMenu - 3. 입출고내역
+	
+	
+	// view(chargeMoneyUI : int) -> dao/memvo 적용
+	void chargeMoney(Member member);
 	
 	//1.물건관리 2.SPOT관리 3.회원로그 4.입출고내역 5.로그아웃
 	//1. 아이템컨트롤러 메뉴 호출
@@ -23,10 +36,6 @@ public interface MemberController {
 	//5. 종료
 	void adminMenu();
 	
-	// view에서 받은 Member를 dao에 업데이트로 적용, 인스턴스변수에도 적용
-	void changeInfo(); 
 	
-	// view(chargeMoneyUI : int) -> dao/memvo 적용
-	void chargeMoney();
 	
 }

@@ -11,11 +11,11 @@ public class MemberViewImple implements MemberView {
 	
 	Scanner sc = new Scanner(System.in);
 	private Member member;
-	private MemberDao memdao;
 	private SpotControllerImpl spotcontrol;
-	
-	public MemberViewImple(SpotControllerImpl spotcontrol) {
+	private MemberDao memdao;
+	public MemberViewImple(SpotControllerImpl spotcontrol, MemberDao memdao) {
 		this.spotcontrol = spotcontrol;
+		this.memdao = memdao;
 	}
 	
 	@Override
@@ -38,33 +38,37 @@ public class MemberViewImple implements MemberView {
 		String email;
 		int spot_id;
 		
+		//spot 리스트 받음
 		List<Spot> list;
 		
 		while(true) {
-			System.out.println("------회원가입------");
+			System.out.println("------JOIN MENU------");
 			System.out.print("ID : ");
 			id = sc.next().trim();
 			
+			//아이디 중복조건
+			String checkid = memdao.checkId(id);
+			if(checkid != null) {
+				if(checkid.equals(id)) {
+					System.out.println("중복된 아이디가 존재합니다. 다시 입력해 주세요.");
+					continue;
+				}
+			}
+			
+			System.out.println("비밀번호 4자리 이상 입력해 주세요.");
 			System.out.print("PASSWORD : ");
 			pw = sc.next().trim();
 			
+			//비밀번호 4자리 이상 조건
 			if(pw.length() < 4) {
-				System.out.println("비밀번호는 4자리 이상 입력하시오.");
+				System.out.println("조건에 부합하지 않으니 다시 입력해 주세요.");
 				continue;
 			}
 			
 			System.out.print("NAME : ");
 			name = sc.next().trim();
-			/*
-			for (int i = 0; i < name.length(); i++) {
-				int num = (int)name.charAt(i);
-				if((num < 65 || num > 90) && (num < 97 || num >122) ) {
-					System.out.println("오류! 다시 입력하세요.");
-					continue;
-				}
-				continue;
-			}
-			*/
+			
+			
 			System.out.print("PHONE : ");
 			phone = sc.next().trim();
 			
@@ -74,7 +78,7 @@ public class MemberViewImple implements MemberView {
 			list = spotcontrol.findAll();
 			System.out.println("원하시는 보관소 id 번호를 입력하세요.");
 			System.out.print(list.toString() + " :");
-			spot_id = sc.nextInt();
+			spot_id = Integer.parseInt(sc.next().trim());
 			
 			System.out.println("정상적으로 가입이 완료되었습니다.");
 			break;
@@ -89,7 +93,7 @@ public class MemberViewImple implements MemberView {
 	public String[] loginUI() {
 		String[] userInfo = new String[2];
 		
-		System.out.println("------로그인------");
+		System.out.println("------LOGIN MENU------");
 		
 		System.out.print("id : ");
 		userInfo[0] = sc.next().trim();
@@ -111,9 +115,10 @@ public class MemberViewImple implements MemberView {
 		return select;
 	}
 	
+	/*회원정보*/
 	@Override
-	public String userUpdate() {
-		System.out.println("------회원정보------");
+	public String userUpdateUI() {
+		System.out.println("------USER INFO------");
 		String[] commands = { "정보수정", "탈퇴"};
 		
 		String select = Command.inputUserChoice(commands);
@@ -122,8 +127,8 @@ public class MemberViewImple implements MemberView {
 	}
 
 	@Override
-	public String userRud() {
-		System.out.println("------정보수정------");
+	public String userRudUI() {
+		System.out.println("------CHANGING INFO------");
 		String[] commands = { "비밀번호", "이름", "전화번호", "이메일"};
 		
 		String select = Command.inputUserChoice(commands);
@@ -132,7 +137,7 @@ public class MemberViewImple implements MemberView {
 	}
 
 	@Override
-	public String updateObject(String select) {
+	public String updateObjectUI(String select) {
 		
 		System.out.print("수정하실 " + select + "의 내용을 입력 해 주세요 :");
 		String userInfoUp =  sc.next().trim();
@@ -142,8 +147,8 @@ public class MemberViewImple implements MemberView {
 	}
 	
 	@Override
-	public String userOut(String id) {
-		System.out.println("------탈퇴------");
+	public String userOutUI(String id) {
+		System.out.println("------SIGN OUT------");
 		
 		System.out.print("확인을 위해 비밀번호를 입력하세요 : ");
 		
@@ -151,8 +156,21 @@ public class MemberViewImple implements MemberView {
 		
 		return pw;
 	}
-
 	
+
+	@Override
+	public int chargeMoneyUI() {
+		System.out.println("------CHARGE CASH------");
+		
+		System.out.print("충전하실 금액을 입력해 주세요 : ");
+		int cash = sc.nextInt();
+		
+		return cash;
+	}
+	
+	
+	
+	/*관리자 메뉴*/
 	@Override
 	public String adminUI() {
 		System.out.println("관리자님 안녕하세요!");
@@ -164,18 +182,5 @@ public class MemberViewImple implements MemberView {
 		
 		return select;
 	}
-
-	@Override
-	public Member changeInfoUI() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int chargeMoneyUI() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 
 }

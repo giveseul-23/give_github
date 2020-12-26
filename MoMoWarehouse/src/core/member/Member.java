@@ -86,7 +86,6 @@ public class Member {
 		return spot_id;
 	}
 	
-	
 
 	public void setGrade(String grade) {
 		this.grade = grade;
@@ -110,8 +109,8 @@ public class Member {
 
 	@Override
 	public String toString() {
-		return memberId + "님의 정보 : name = " + name + ", phone = " + phone + ", email = "
-				+ email + ", spot_id = " + spot_id + ", grade = " + grade + ", cash = " + cash + "]";
+		return memberId + " 회원님의 정보 | 이름 = " + name + ", 전화번호 = " + phone + ", 이메일 = "
+				+ email + ", 보관소ID = " + spot_id + ", 등급 = " + grade + ", 충전금액 = " + cash ;
 	}
 	
 	

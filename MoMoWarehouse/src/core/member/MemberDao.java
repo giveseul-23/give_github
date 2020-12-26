@@ -100,7 +100,38 @@ public class MemberDao {
 			return member;
 		}
 		
-		//Update
+		//Select - 중복 ID 체크
+		public String checkId(String id) {
+			Member member = null;
+			String checkid = null;
+			
+			try {
+				conn = DriverManager.getConnection(URL, USER, PW);
+				
+				String sql = "SELECT MEMBER_ID  "
+							+"  FROM MEMBER "
+							+"  WHERE MEMBER_ID = ? ";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, id); 
+				rs = pstmt.executeQuery(); 
+				
+				if(rs.next()) {
+					member = new Member();
+					member.setMemberId(rs.getString("MEMBER_ID"));
+					checkid = member.getMemberId();
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				close(conn, pstmt, rs);
+			}
+			
+			return checkid;
+		}
+		
+		
+		//Update - 회원정보수정(CRUD)
 		public int update(Member member, String userInfoUpTxt, String id) {
 			int result = 0;
 			
@@ -125,6 +156,35 @@ public class MemberDao {
 				}
 				
 				pstmt.setString(2, id);
+				
+				result = pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				close(conn,pstmt);
+			}
+			
+			return result;
+		}
+		
+		//Update - 충전금액 변경
+		public int updatingCash(Member member) {
+			int result = 0;
+			
+			try {
+				conn = DriverManager.getConnection(URL, USER, PW);
+				
+				StringBuilder sql = new StringBuilder();
+				sql.append("UPDATE MEMBER ");
+				sql.append("  SET CASH = ? ");
+				sql.append("  WHERE MEMBER_ID = ? ");
+				
+				pstmt = conn.prepareStatement(sql.toString());
+				
+				pstmt.setInt(1, member.getCash()); 
+				pstmt.setString(2, member.getMemberId());
 				
 				result = pstmt.executeUpdate();
 				
